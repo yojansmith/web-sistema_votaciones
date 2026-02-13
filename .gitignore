@@ -39,3 +39,13 @@
 /node_modules
 /log/*
 /tmp/*
+
+# Rails
+/config/master.key
+/storage
+/log/*
+/tmp/*
+.env
+
+# Windows
+*Zone.Identifier
