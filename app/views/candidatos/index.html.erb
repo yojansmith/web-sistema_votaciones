@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="candidatos-admin-wrapper">
+    <div class="candidatos-admin-header">
+      <h1 class="candidatos-admin-title">Administrar Candidatos</h1>
+      <%= link_to "Crear Nuevo Candidato", new_candidato_path, class: "btn btn--primary" %>
+    </div>
+
+    <div class="candidatos-admin-list">
+      <% @candidatos.each do |candidato| %>
+        <div class="candidato-admin-card">
+          <div class="candidato-admin-photo">
+            <% if candidato.foto.attached? %>
+              <%= image_tag candidato.foto, alt: candidato.nombre, class: "candidato-admin-image" %>
+            <% else %>
+              <div class="candidato-no-photo">Sin foto</div>
+            <% end %>
+          </div>
+
+          <div class="candidato-admin-info">
+            <h3 class="candidato-admin-name"><%= candidato.nombre %></h3>
+            <p class="candidato-admin-cargo"><strong>Cargo:</strong> <%= candidato.cargo.nombre %></p>
+            <p class="candidato-admin-partido"><strong>Partido:</strong> <%= candidato.partido.nombre %></p>
+            <p class="candidato-admin-propuesta"><%= truncate(candidato.propuesta, length: 150) %></p>
+          </div>
+
+          <div class="candidato-admin-actions">
+            <%= link_to "Editar", edit_candidato_path(candidato), class: "btn-action btn-action--edit" %>
+            <%= button_to "Eliminar", candidato_path(candidato), method: :delete, 
+                data: { confirm: "¿Estás seguro de eliminar a #{candidato.nombre}?" }, 
+                class: "btn-action btn-action--delete" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

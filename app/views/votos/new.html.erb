@@ -1,0 +1,172 @@
+<div class="voting-page">
+  <div class="voting-header">
+    <h1>Formulario de Votación</h1>
+  </div>
+
+  <!-- Datos del usuario -->
+  <div class="user-info">
+    <p><strong>Nombre:</strong> <%= current_user.nombre %></p>
+    <p><strong>Cédula:</strong> <%= current_user.cedula %></p>
+  </div>
+
+  <!-- Formularios de filtro -->
+  <div class="filters-section">
+    <%= form_with url: new_voto_path, method: :get, local: true, id: "filter-form" do %>
+      
+      <div class="filters-grid">
+        <!-- Filtro por Cargo -->
+        <div class="filter-group">
+          <label class="filter-label">Selecciona un cargo</label>
+          <%= select_tag :cargo_id,
+                options_from_collection_for_select(
+                  @cargos,
+                  :id,
+                  :nombre,
+                  params[:cargo_id]
+                ),
+                include_blank: "Todos los cargos",
+                class: "filter-select",
+                id: "cargo-select" %>
+        </div>
+
+        <!-- Filtro por Partido -->
+        <div class="filter-group">
+          <label class="filter-label">Filtrar por partido (opcional)</label>
+          <%= select_tag :partido_id,
+                options_from_collection_for_select(
+                  @partidos,
+                  :id,
+                  :nombre,
+                  params[:partido_id]
+                ),
+                include_blank: "Todos los partidos",
+                class: "filter-select",
+                id: "partido-select" %>
+        </div>
+      </div>
+
+      <!-- Botón para limpiar filtros -->
+      <% if params[:cargo_id].present? || params[:partido_id].present? %>
+        <div class="filter-actions">
+          <%= link_to "Limpiar filtros", new_voto_path, class: "btn-clear-filters" %>
+        </div>
+      <% end %>
+
+    <% end %>
+  </div>
+
+  <!-- Candidatos -->
+  <% if params[:cargo_id].present? %>
+    <% if @candidatos.any? %>
+      <div class="candidates-section">
+        <div class="candidates-count">
+          <p>Se encontraron <strong><%= @candidatos.count %></strong> candidato(s)</p>
+        </div>
+
+        <form action="<%= voto_path %>" method="post" id="voting-form">
+          <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+          
+          <%# DEBUG TEMPORAL - Puedes eliminarlo después %>
+          <% if @voto.errors.any? %>
+            <div style="background: #ffcccc; padding: 15px; margin: 10px 0; border-radius: 5px;">
+              <h3>Errores encontrados:</h3>
+              <ul>
+                <% @voto.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+          <%# FIN DEBUG %>
+          
+          <input type="hidden" name="voto[cargo_id]" value="<%= params[:cargo_id] %>" />
+          
+          <div class="candidates-list">
+            <% @candidatos.each do |candidato| %>
+              <div class="candidate-card">
+                
+                <!-- BOTONES DE ADMIN (solo si es admin) - AHORA FUERA DEL FORM -->
+                <% if admin? %>
+                  <div class="candidate-admin-buttons">
+                    <%= link_to "✏️", edit_candidato_path(candidato), 
+                        class: "btn-admin btn-admin--edit", 
+                        title: "Editar candidato" %>
+                    
+                    <form action="<%= candidato_path(candidato) %>" method="post" style="display: inline;">
+                      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                      <input type="hidden" name="_method" value="delete" />
+                      <button type="submit" 
+                              class="btn-admin btn-admin--delete" 
+                              title="Eliminar candidato"
+                              onclick="return confirm('¿Estás seguro de eliminar a <%= candidato.nombre %>?');">
+                        🗑️
+                      </button>
+                    </form>
+                  </div>
+                <% end %>
+
+                <div class="candidate-photo">
+                  <% if candidato.foto.attached? %>
+                    <%= image_tag candidato.foto, alt: candidato.nombre, class: "candidate-image", width: 100, height: 100 %>
+                  <% else %>
+                    <div class="no-photo">Sin foto</div>
+                  <% end %>
+                </div>
+
+                <div class="candidate-info">
+                  <p class="candidate-name"><strong><%= candidato.nombre %></strong></p>
+                  <p class="candidate-party">
+                    <span class="party-badge" style="background-color: <%= partido_color(candidato.partido) %>;">
+                      <%= candidato.partido.nombre %>
+                    </span>
+                  </p>
+                  <p class="candidate-cargo-badge"><%= candidato.cargo.nombre %></p>
+                  <p class="candidate-proposal"><%= truncate(candidato.propuesta, length: 120) %></p>
+                </div>
+
+                <div class="candidate-vote">
+                  <label class="vote-option">
+                    <input type="radio" name="voto[candidato_id]" value="<%= candidato.id %>" form="voting-form" />
+                    Seleccionar
+                  </label>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <div class="vote-submit">
+            <input type="submit" value="Enviar Voto" class="vote-button" />
+          </div>
+        </form>
+      </div>
+    <% else %>
+      <p class="no-results">No hay candidatos disponibles con los filtros seleccionados.</p>
+    <% end %>
+  <% else %>
+    <p class="no-results">Por favor, selecciona un cargo para ver los candidatos.</p>
+  <% end %>
+</div>
+
+<!-- JavaScript para auto-submit al cambiar los filtros -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const cargoSelect = document.getElementById('cargo-select');
+    const partidoSelect = document.getElementById('partido-select');
+    const filterForm = document.getElementById('filter-form');
+    
+    if (cargoSelect && filterForm) {
+      cargoSelect.addEventListener('change', function() {
+        filterForm.submit();
+      });
+    }
+
+    if (partidoSelect && filterForm) {
+      partidoSelect.addEventListener('change', function() {
+        // Solo enviar si hay un cargo seleccionado
+        if (cargoSelect && cargoSelect.value) {
+          filterForm.submit();
+        }
+      });
+    }
+  });
+</script>

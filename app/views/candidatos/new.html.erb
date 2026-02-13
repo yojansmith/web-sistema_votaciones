@@ -1,0 +1,42 @@
+<div class="candidato-form-wrapper">
+  <div class="candidato-form-header">
+    <h1 class="candidato-form-title">Crear candidato</h1>
+  </div>
+
+  <%= form_with model: @candidato, local: true, class: "candidato-form" do |f| %>
+    
+    <div class="form-group">
+      <%= f.label :nombre, class: "form-label" %>
+      <%= f.text_field :nombre, required: true, class: "form-input" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :propuesta, class: "form-label" %>
+      <%= f.text_area :propuesta, required: true, class: "form-textarea" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :cargo, class: "form-label" %>
+      <%= f.select :cargo_id, Cargo.all.collect { |c| [c.nombre, c.id] }, 
+                   { prompt: "Seleccione un cargo" }, 
+                   { class: "form-select" } %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :partido, class: "form-label" %>
+      <%= f.select :partido_id, Partido.all.collect { |p| [p.nombre, p.id] }, 
+                   { prompt: "Seleccione un partido" }, 
+                   { class: "form-select" } %>
+    </div>
+
+    <div class="form-group form-group--file">
+      <%= f.label :foto, class: "form-label" %>
+      <%= f.file_field :foto, class: "form-file-input" %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.submit "Crear candidato", class: "btn btn--primary" %>
+    </div>
+
+  <% end %>
+</div>

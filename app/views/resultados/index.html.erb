@@ -1,0 +1,70 @@
+<div class="resultados-wrapper">
+  <div class="resultados-header">
+    <h1 class="resultados-title">📊 Resultados de la votación</h1>
+  </div>
+
+  <div class="resultados-content">
+    <% @cargos.each do |cargo| %>
+      <div class="cargo-section">
+        <div class="cargo-header">
+          <h2 class="cargo-title"><%= cargo.nombre %></h2>
+        </div>
+
+        <div class="cargo-chart">
+          <canvas id="chart-cargo-<%= cargo.id %>" class="chart-canvas" height="120"></canvas>
+        </div>
+
+        <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const ctx = document.getElementById("chart-cargo-<%= cargo.id %>");
+          if (!ctx) return;
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: <%= raw cargo.candidatos.map(&:nombre).to_json %>,
+              datasets: [{
+                label: 'Votos',
+                data: <%= raw cargo.candidatos.map { |c| c.votos.count }.to_json %>,
+
+                // 🎨 color de las barras
+                backgroundColor: '#2563eb',
+
+                // ✂️ grosor de las barras
+                barThickness: 45,
+                maxBarThickness: 50
+              }]
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: { display: false }
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1
+                  }
+                }
+              }
+            }
+          });
+        });
+        </script>
+
+        <div class="cargo-winner">
+          <p class="winner-text">
+            <span class="winner-icon">🏆</span>
+            <strong class="winner-label">Ganador:</strong>
+            <span class="winner-name">
+              <%= cargo.candidatos.max_by { |c| c.votos.count }&.nombre || "Sin votos" %>
+            </span>
+          </p>
+        </div>
+
+        <hr class="cargo-divider">
+      </div>
+    <% end %>
+  </div>
+</div>

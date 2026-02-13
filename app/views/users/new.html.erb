@@ -1,0 +1,62 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <h1 class="auth-title">Registro de Votante</h1>
+    <p class="auth-subtitle">Crea tu cuenta para poder votar</p>
+
+    <%= form_with model: @user, local: true, class: "auth-form" do |f| %>
+      
+      <% if @user.errors.any? %>
+        <div style="background: #ffcccc; padding: 15px; margin: 10px 0; border-radius: 5px;">
+          <h3>Errores encontrados:</h3>
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-group">
+        <%= f.label :nombre, "Nombre completo", class: "form-label" %>
+        <%= f.text_field :nombre, 
+            required: true, 
+            class: "form-input",
+            placeholder: "Ej: Juan Pérez",
+            autofocus: true %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :cedula, "Número de Cédula", class: "form-label" %>
+        <%= f.text_field :cedula, 
+            required: true, 
+            class: "form-input",
+            placeholder: "Ej: 1234567890" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password, "Contraseña", class: "form-label" %>
+        <%= f.password_field :password, 
+            required: true, 
+            class: "form-input",
+            placeholder: "Mínimo 6 caracteres" %>
+      </div>
+
+      <div class="form-group">
+        <%= f.label :password_confirmation, "Confirmar Contraseña", class: "form-label" %>
+        <%= f.password_field :password_confirmation, 
+            required: true, 
+            class: "form-input",
+            placeholder: "Confirma tu contraseña" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Registrarse", class: "btn btn--primary btn-lg" %>
+      </div>
+
+    <% end %>
+
+    <div class="auth-footer">
+      <p>¿Ya tienes cuenta? <%= link_to "Inicia sesión aquí", login_path, class: "auth-link" %></p>
+    </div>
+  </div>
+</div>

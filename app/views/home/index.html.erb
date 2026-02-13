@@ -1,0 +1,145 @@
+<!-- Sección Hero con imagen de fondo -->
+<section class="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">Sistema nacional de Votaciones</h1>
+    <p class="hero-subtitle">Bienvenido al sistema de votación electrónica</p>
+    <p class="hero-description">Usa el menú para votar o consultar resultados.</p>
+  </div>
+</section>
+
+<!-- Sección de Tarjetas -->
+<section class="cards-section">
+  <div class="container">
+    <div class="cards-wrapper">
+      
+      <!-- Tarjeta 1 - Votar -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">🗳️</div>
+          <h3 class="card-title">Emitir tu Voto</h3>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Participa en las elecciones y ejerce tu derecho al voto de manera segura y confidencial.</p>
+        </div>
+        <div class="card-footer">
+          <%= link_to "Votar Ahora", new_voto_path, class: "card-button" %>
+        </div>
+      </div>
+
+      <!-- Tarjeta 2 - Resultados -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">📊</div>
+          <h3 class="card-title">Ver Resultados</h3>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Consulta los resultados en tiempo real y conoce quiénes lideran en cada categoría.</p>
+        </div>
+        <div class="card-footer">
+          <%= link_to "Ver Resultados", resultados_path, class: "card-button" %>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <!-- Tarjetas anchas informativas -->
+    <div class="info-cards-wrapper">
+      
+      <!-- Tarjeta Ancha 1 - Cómo Votar -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">📝</div>
+          <h3 class="info-card-title">¿Cómo Votar?</h3>
+        </div>
+        <div class="info-card-body">
+          <div class="steps-container">
+            <div class="step">
+              <div class="step-number">1</div>
+              <div class="step-content">
+                <h4 class="step-title">Inicia Sesión</h4>
+                <p class="step-text">Accede con tus credenciales al sistema.</p>
+              </div>
+            </div>
+            
+            <div class="step">
+              <div class="step-number">2</div>
+              <div class="step-content">
+                <h4 class="step-title">Selecciona tu Candidato</h4>
+                <p class="step-text">Revisa las propuestas y elige tu opción.</p>
+              </div>
+            </div>
+            
+            <div class="step">
+              <div class="step-number">3</div>
+              <div class="step-content">
+                <h4 class="step-title">Confirma tu Voto</h4>
+                <p class="step-text">Verifica tu selección antes de enviar.</p>
+              </div>
+            </div>
+            
+            <div class="step">
+              <div class="step-number">4</div>
+              <div class="step-content">
+                <h4 class="step-title">Recibe Confirmación</h4>
+                <p class="step-text">Tu voto ha sido registrado exitosamente.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tarjeta Ancha 2 - Próximas Elecciones -->
+      <div class="info-card">
+        <div class="info-card-header">
+          <div class="info-card-icon">📅</div>
+          <h3 class="info-card-title">Próximas Elecciones</h3>
+        </div>
+        <div class="info-card-body">
+          <div class="elections-container">
+            
+            <div class="election-item">
+              <div class="election-date">
+                <span class="election-day">31</span>
+                <span class="election-month">MAY</span>
+              </div>
+              <div class="election-info">
+                <h4 class="election-title">Elecciones Presidenciales</h4>
+                <p class="election-description">Vota por el representante presidencial para el período 2026-2030.</p>
+                <span class="election-status election-status--upcoming">Proximamente</span>
+              </div>
+            </div>
+
+            <div class="election-item">
+              <div class="election-date">
+                <span class="election-day">8</span>
+                <span class="election-month">MAR</span>
+              </div>
+              <div class="election-info">
+                <h4 class="election-title">Elecciones de Camara y Senado</h4>
+                <p class="election-description">Elección de representantes de camara y senado.</p>
+                <span class="election-status election-status--upcoming">Próximamente</span>
+              </div>
+            </div>
+
+            <div class="election-item">
+              <div class="election-date">
+                <span class="election-day">2027</span>
+                <span class="election-month">OCT</span>
+              </div>
+              <div class="election-info">
+                <h4 class="election-title">Alcalde</h4>
+                <p class="election-description">Votación para miembros del consejo estudiantil universitario.</p>
+                <span class="election-status election-status--upcoming">Próximamente</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  
+</section>  
+

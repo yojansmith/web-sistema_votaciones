@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  propuesta: MyText
+  cargo: one
+  partido: one
+
+two:
+  nombre: MyString
+  propuesta: MyText
+  cargo: two
+  partido: two
